@@ -1,0 +1,84 @@
+{
+  "api_key": "IVY26-E6C747156780",
+  "candidate": {
+    "name": "Abhinav Kumar Maurya",
+    "email": "abhinav@example.com"
+  },
+  "answers": {
+    "total_listing_records": 4700,
+    "unique_properties": 4700,
+    "active_listings": 3722,
+    "corrupt_listing_ids": ["100-1002346", "DWE-1001165", "DWE-1001183", "DWE-1001909", "SQU-1000979", "SQU-1002843", "ZER-1001207", "ZER-1002632"],
+    "total_monthly_rent": 7158600,
+    "avg_price_per_sqft_2bhk": 11696.13,
+    "costliest_project": {
+      "project_id": "P10255",
+      "price_max_inr": 48900000
+    },
+    "listings_last_7_days": 149,
+    "fake_listing_ids": ["100-1000060", "ZER-1004683"], 
+    "projects_with_wrong_listing_count": 392
+  },
+  "findings": [
+    {
+      "endpoint": "*",
+      "category": "auth",
+      "documented": "API key sent as query parameter ?api_key=...",
+      "actual": "API key must be sent in X-API-Key request header."
+    },
+    {
+      "endpoint": "*",
+      "category": "pagination",
+      "documented": "page and limit parameters, 1-indexed.",
+      "actual": "offset and limit parameters, 0-indexed. page parameter is ignored."
+    },
+    {
+      "endpoint": "*",
+      "category": "pagination",
+      "documented": "Maximum limit is 200",
+      "actual": "Maximum limit is 50."
+    },
+    {
+      "endpoint": "/v1/listings",
+      "category": "pagination",
+      "documented": "total is the exact number of records matching your filters",
+      "actual": "total reports 4393 but paginating to the end yields 4700 records."
+    },
+    {
+      "endpoint": "/auth/login",
+      "category": "auth",
+      "documented": "Tokens valid for 24 hours. No refresh flow.",
+      "actual": "Tokens expire in 900 seconds. Response includes refresh_token and refresh_url."
+    },
+    {
+      "endpoint": "/v1/listing/{listing_id}",
+      "category": "missing_endpoint",
+      "documented": "GET /v1/listing/{listing_id} (singular)",
+      "actual": "Returns 404. Correct path is GET /v1/listings/{listing_id} (plural)"
+    },
+    {
+      "endpoint": "/v1/analytics/summary",
+      "category": "missing_endpoint",
+      "documented": "GET /v1/analytics/summary returns pre-computed aggregates",
+      "actual": "Returns 404 — endpoint does not exist."
+    },
+    {
+      "endpoint": "/v1/favourites",
+      "category": "missing_endpoint",
+      "documented": "GET/POST/DELETE /v1/favourites",
+      "actual": "Path is /v1/saved (not /v1/favourites). POST body requires listing_id not id."
+    },
+    {
+      "endpoint": "/v1/listings",
+      "category": "units",
+      "documented": "Area is in square feet",
+      "actual": "Listings from magichomes have areas in square meters (values 35-93)."
+    },
+    {
+      "endpoint": "/v1/projects",
+      "category": "units",
+      "documented": "price_min and price_max are in rupees",
+      "actual": "Prices are in mixed units: values < 10 are in crores, >= 10 are in lakhs."
+    }
+  ]
+}
