@@ -1,45 +1,30 @@
-# Ivy Homes Property Listing App
+# Ivy Homes Assignment
 
-A React + Express application built for the Ivy Homes internship assignment, displaying real estate listings and projects in Whitefield, Bangalore.
+Here is my submission for the Ivy Homes frontend assignment. I built this using React (Vite) and Tailwind, along with a small Express proxy server to handle some of the API quirks.
 
-## Running the Application
+## How to run it
 
-### Prerequisites
-- Node.js
+You'll need two terminals to run the frontend and the proxy server.
 
-### Setup and Execution
+**Terminal 1 (Backend Proxy):**
+```bash
+cd server
+npm install
+npm start
+```
 
-1. **Install Dependencies**
-   Navigate to both the server and client directories and install dependencies:
-   ```bash
-   cd server
-   npm install
-   
-   cd ../client
-   npm install
-   ```
+**Terminal 2 (Frontend):**
+```bash
+cd client
+npm install
+npm run dev
+```
+The app will open at `http://localhost:5173`. 
 
-2. **Start the Application**
-   You can start both the backend proxy and frontend development server:
-   ```bash
-   # Terminal 1: Backend
-   cd server
-   npm start
+## Notes on the implementation
 
-   # Terminal 2: Frontend
-   cd client
-   npm run dev
-   ```
+While working with the API, I noticed a lot of the documentation didn't match the actual responses (which I've fully logged in my `submission.json`). 
 
-## Architecture Notes
+Because of CORS issues, the 15-minute token expiry, and the `X-API-Key` header requirements, I set up the Express server to handle auth and proxy the requests securely to the Ivy Homes API. 
 
-### Express Proxy Backend
-The application includes a custom backend proxy built with Express.js. This proxy is crucial because it:
-- Automatically handles the 15-minute token refresh cycle for the Ivy Homes API.
-- Fixes CORS issues by acting as a middleman between the browser and the API.
-- Automatically injects the correct `X-API-Key` headers into requests, which is the actual required method of authentication (contrary to the documented `?api_key=` query parameter).
-
-### Data Discrepancies and Handling
-During development, several data inconsistencies were discovered in the API responses. The frontend handles these gracefully to provide a unified experience:
-- **Mixed Price Units**: Project prices were returned in mixed units (values < 10 in Crores, values >= 10 in Lakhs). The application normalizes these to consistently display prices correctly.
-- **Area Units**: Listings sourced from `magichomes` reported area in square meters instead of the documented square feet. The app standardizes these to square feet.
+The frontend handles data normalization on the fly. For example, it detects when project prices are mixed up between Crores and Lakhs, and converts the magichomes listings from square meters into square feet so the UI remains consistent.
