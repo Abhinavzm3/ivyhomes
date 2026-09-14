@@ -11,6 +11,8 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const [showSampleCreds, setShowSampleCreds] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -83,6 +85,23 @@ export default function Login() {
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
+          </div>
+          
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => setShowSampleCreds(!showSampleCreds)}
+              className="w-full text-sm text-blue-600 hover:text-blue-500 font-medium text-center"
+            >
+              {showSampleCreds ? 'Hide Sample Credentials' : 'Show Sample Credentials'}
+            </button>
+            
+            {showSampleCreds && (
+              <div className="mt-3 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 space-y-2">
+                <p><strong>Users:</strong> demo1@ivy.homes, demo2@ivy.homes, demo3@ivy.homes</p>
+                <p><strong>Password:</strong> dffceac8d0</p>
+              </div>
+            )}
           </div>
         </form>
       </div>
