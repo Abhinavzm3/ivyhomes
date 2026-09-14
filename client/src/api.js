@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.PROD ? 'https://server-wheat-nu-25.vercel.app/api' : '/api',
+  baseURL: import.meta.env.PROD ? 'https://server-git-main-abhinavzm3s-projects.vercel.app/api' : '/api',
 });
 
 // Add auth token to every request

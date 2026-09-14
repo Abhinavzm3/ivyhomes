@@ -11,7 +11,9 @@ const savedRoutes = require('./routes/saved');
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://client-rust-five-15.vercel.app'],
+  origin: function (origin, callback) {
+    callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());
